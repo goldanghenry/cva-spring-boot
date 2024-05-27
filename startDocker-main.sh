@@ -4,7 +4,7 @@ sudo docker rm cpa-main
 sudo docker image prune -f
 
 #최신버전 pull 후에 빌드
-git pull origin dev
+git pull origin main
 ./gradlew clean build -x test
 
 # docker 실행
