@@ -1,4 +1,4 @@
-package np.minarybook.config.jwt
+package knu.cpa.config.jwt
 
 import org.springframework.context.annotation.Bean
 import org.springframework.security.config.annotation.web.builders.HttpSecurity

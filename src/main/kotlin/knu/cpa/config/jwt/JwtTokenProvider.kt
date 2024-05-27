@@ -1,4 +1,4 @@
-package np.minarybook.config.jwt
+package knu.cpa.config.jwt
 
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm

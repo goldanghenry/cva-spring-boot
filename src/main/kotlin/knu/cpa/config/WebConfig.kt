@@ -1,4 +1,4 @@
-package np.minarybook.config
+package knu.cpa.config
 
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.config.annotation.CorsRegistry
