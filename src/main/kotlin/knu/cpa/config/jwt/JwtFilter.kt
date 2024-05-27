@@ -1,4 +1,4 @@
-package np.minarybook.config.jwt
+package knu.cpa.config.jwt
 
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
