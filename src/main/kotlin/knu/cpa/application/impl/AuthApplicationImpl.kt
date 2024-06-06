@@ -2,6 +2,8 @@ package knu.cpa.application.impl
 
 import knu.cpa.application.AuthApplication
 import knu.cpa.config.jwt.JwtTokenProvider
+import knu.cpa.model.dto.auth.req.AuthPostReq
+import knu.cpa.model.dto.auth.res.AuthGetRes
 import knu.cpa.model.dto.auth.res.AuthKakaoAccessRes
 import knu.cpa.model.dto.auth.res.AuthKakaoInfoRes
 import knu.cpa.model.dto.auth.res.AuthLoginRes
@@ -9,6 +11,7 @@ import knu.cpa.model.entity.User
 import knu.cpa.repository.UserRepository
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.*
+import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.client.RestTemplate
@@ -56,12 +59,30 @@ class AuthApplicationImpl(
         return ResponseEntity.ok(AuthLoginRes(refreshToken = token, accessToken = accessToken))
     }
 
+    override fun postInfo(authPostReq: AuthPostReq, authentication: Authentication): ResponseEntity<HttpStatus> {
+        val user = User(authentication)
+
+        user.name = authPostReq.name
+        user.birthday = authPostReq.birthday
+        user.gender = authPostReq.gender
+
+        userRepository.save(user)
+
+        return ResponseEntity(HttpStatus.OK)
+    }
+
+    override fun getInfo(authentication: Authentication): ResponseEntity<AuthGetRes> {
+        return ResponseEntity(
+            AuthGetRes(userRepository.findById(authentication.name.toLong()).orElseThrow()), HttpStatus.OK
+        )
+    }
+    
     private fun register(authKakaoInfoRes: AuthKakaoInfoRes): ResponseEntity<AuthLoginRes>{
 
         val accessToken = jwtTokenProvider.createAccessToken(authKakaoInfoRes.id)
         val refreshToken = jwtTokenProvider.createRefreshToken(authKakaoInfoRes.id)
 
-        val user = User(id = authKakaoInfoRes.id, name = authKakaoInfoRes.properties.nickname, profileImg = authKakaoInfoRes.kakaoAccount.profile.profileImageUrl)
+        val user = User(id = authKakaoInfoRes.id, name = authKakaoInfoRes.properties.nickname, profileImg = authKakaoInfoRes.kakaoAccount.profile.profileImageUrl, birthday = null, gender = null)
         userRepository.save(user)
 
         return ResponseEntity.ok(AuthLoginRes(refreshToken = refreshToken, accessToken = accessToken))

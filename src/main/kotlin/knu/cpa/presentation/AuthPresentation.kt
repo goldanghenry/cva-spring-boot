@@ -8,13 +8,17 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import knu.cpa.application.AuthApplication
+import knu.cpa.model.dto.auth.req.AuthPostReq
+import knu.cpa.model.dto.auth.res.AuthGetRes
 import knu.cpa.model.dto.auth.res.AuthLoginRes
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/auth")
-@Tag(name = "인증")
+@Tag(name = "인증 및 인증")
 class AuthPresentation (private val authApplication: AuthApplication){
 
     @GetMapping("/login")
@@ -30,5 +34,18 @@ class AuthPresentation (private val authApplication: AuthApplication){
     )
     fun patchLogin(@Parameter(hidden = true) @RequestHeader("Authorization") refreshToken: String): ResponseEntity<AuthLoginRes> {
         return authApplication.patchLogin(refreshToken)
+    }
+
+    @RequestMapping("/info", method = [RequestMethod.POST, RequestMethod.PUT])
+    @Operation(summary = "사용자 기본정보 입력 API")
+    @ApiResponses
+    fun postInfo(@RequestBody authPostReq: AuthPostReq, @Parameter(hidden = true) authentication: Authentication): ResponseEntity<HttpStatus>{
+        return authApplication.postInfo(authPostReq, authentication)
+    }
+
+    @GetMapping("/info")
+    @Operation(summary = "사용자 기본정보 조회 API")
+    fun getInfo(@Parameter(hidden = true) authentication: Authentication): ResponseEntity<AuthGetRes>{
+        return authApplication.getInfo(authentication)
     }
 }
