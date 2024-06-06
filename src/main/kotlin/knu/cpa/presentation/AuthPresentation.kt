@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/auth")
-@Tag(name = "인증 및 인증")
+@Tag(name = "인증 및 유저")
 class AuthPresentation (private val authApplication: AuthApplication){
 
     @GetMapping("/login")
