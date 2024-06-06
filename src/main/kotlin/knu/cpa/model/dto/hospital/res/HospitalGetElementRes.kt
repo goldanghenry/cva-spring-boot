@@ -10,10 +10,10 @@ data class HospitalGetElementRes(
     val contact: String?
 ){
     constructor(hospital: Hospital): this(
-        name = hospital.name,
-        address = hospital.address,
+        name = hospital.name.split("\r").first(),
+        address = hospital.address?.split("\r")?.first(),
         latitude = hospital.latitude,
         longitude = hospital.longitude,
-        contact = hospital.contact
+        contact = hospital.contact?.split("\r")?.first()
     )
 }
