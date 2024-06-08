@@ -11,4 +11,5 @@ interface UserHealthApplication {
     fun post(userHealthPostReq: UserHealthPostReq, authentication: Authentication): ResponseEntity<HttpStatus>
     fun getList(pageNumber: Int, pageSize: Int, authentication: Authentication): ResponseEntity<List<UserHealthGetElementRes>>
     fun get(id: Int?, authentication: Authentication): ResponseEntity<UserHealthGetRes>
+    fun delete(id: Int, authentication: Authentication): ResponseEntity<HttpStatus>
 }

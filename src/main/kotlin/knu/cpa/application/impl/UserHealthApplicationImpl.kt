@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
+import java.util.concurrent.CompletableFuture
 
 @Service
 class UserHealthApplicationImpl(private val userHealthRepository: UserHealthRepository) : UserHealthApplication{
@@ -34,5 +35,13 @@ class UserHealthApplicationImpl(private val userHealthRepository: UserHealthRepo
                 userHealthRepository.findById(id).orElseThrow { NullPointerException() } ?: throw NullPointerException())
         )
 
+    }
+
+    override fun delete(id: Int, authentication: Authentication): ResponseEntity<HttpStatus> {
+        CompletableFuture.runAsync {
+            println(if(userHealthRepository.deleteByIdAndUser(id, User(authentication)) == 1) "DELETE COMPLETE: id=$id"
+            else "DELETE INCOMPLETE: id=$id")
+        }
+        return ResponseEntity.ok().build()
     }
 }

@@ -37,4 +37,10 @@ class UserHealthPresentation(private val userHealthApplication: UserHealthApplic
     fun get(@RequestParam(required = false) id: Int?, @Parameter(hidden = true) authentication: Authentication): ResponseEntity<UserHealthGetRes>{
         return userHealthApplication.get(id, authentication)
     }
+
+    @DeleteMapping
+    @Operation(summary = "유저 건강 정보 삭제")
+    fun delete(@RequestParam(required = false) id: Int, @Parameter(hidden = true) authentication: Authentication): ResponseEntity<HttpStatus>{
+        return userHealthApplication.delete(id, authentication)
+    }
 }
