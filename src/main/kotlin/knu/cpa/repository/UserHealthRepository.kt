@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface UserHealthRepository: JpaRepository<UserHealth, Int> {
     fun findByUser(user: User, pageable: Pageable): List<UserHealth>
+    fun findTopByUserOrderByIdDesc(user: User): UserHealth
 }

@@ -3,6 +3,7 @@ package knu.cpa.application.impl
 import knu.cpa.application.UserHealthApplication
 import knu.cpa.model.dto.userHealth.req.UserHealthPostReq
 import knu.cpa.model.dto.userHealth.res.UserHealthGetElementRes
+import knu.cpa.model.dto.userHealth.res.UserHealthGetRes
 import knu.cpa.model.entity.User
 import knu.cpa.model.entity.UserHealth
 import knu.cpa.repository.UserHealthRepository
@@ -23,5 +24,15 @@ class UserHealthApplicationImpl(private val userHealthRepository: UserHealthRepo
         return ResponseEntity.ok(userHealthRepository.findByUser(User(authentication), PageRequest.of(pageNumber, pageSize)).map{
                 userHealth -> UserHealthGetElementRes(userHealth)
         })
+    }
+
+    override fun get(id: Int?, authentication: Authentication): ResponseEntity<UserHealthGetRes> {
+        return ResponseEntity.ok(
+            UserHealthGetRes(if(id == null)
+                userHealthRepository.findTopByUserOrderByIdDesc(User(authentication))
+            else
+                userHealthRepository.findById(id).orElseThrow { NullPointerException() } ?: throw NullPointerException())
+        )
+
     }
 }
