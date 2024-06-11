@@ -7,13 +7,13 @@ import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 import org.springframework.http.ResponseEntity
 import org.springframework.http.HttpStatus
-import knu.cpa.model.dto.userHealth.res.UserHealthReqDto
+import knu.cpa.model.dto.userHealth.req.UserHealthReqDto
 import knu.cpa.model.dto.userHealth.res.UserHealthResDto
 import knu.cpa.model.dto.userHealth.res.UserHealthResElementDto
 
 @RestController
 @RequestMapping("api/userHealth")
-@Tag(name = "유저정보")
+@Tag(name = "유저 건강")
 class UserHealthPresentation(private val userHealthApplication: UserHealthApplication) {
 
     @GetMapping

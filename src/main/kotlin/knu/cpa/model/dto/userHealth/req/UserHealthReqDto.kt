@@ -1,4 +1,4 @@
-package knu.cpa.model.dto.userHealth.res
+package knu.cpa.model.dto.userHealth.req
 
 data class UserHealthReqDto(
         val id: Long,

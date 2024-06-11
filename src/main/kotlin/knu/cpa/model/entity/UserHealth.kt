@@ -21,4 +21,7 @@ data class UserHealth(
         var city: Boolean,
         var heartDisease: Boolean,
         var job: Int,
+
+        @OneToOne(mappedBy = "userHealth", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+        var stroke: Stroke? = null
 )

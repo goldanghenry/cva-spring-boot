@@ -1,6 +1,6 @@
 package knu.cpa.application
 
-import knu.cpa.model.dto.userHealth.res.UserHealthReqDto
+import knu.cpa.model.dto.userHealth.req.UserHealthReqDto
 import knu.cpa.model.dto.userHealth.res.UserHealthResDto
 import knu.cpa.model.dto.userHealth.res.UserHealthResElementDto
 import org.springframework.security.core.Authentication

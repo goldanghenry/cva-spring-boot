@@ -1,22 +1,22 @@
 package knu.cpa.application.impl
 
 import knu.cpa.application.UserHealthApplication
-import knu.cpa.model.dto.userHealth.res.UserHealthReqDto
+import knu.cpa.model.dto.userHealth.req.UserHealthReqDto
 import knu.cpa.model.dto.userHealth.res.UserHealthResDto
 import knu.cpa.model.dto.userHealth.res.UserHealthResElementDto
+import knu.cpa.model.entity.Stroke
 import knu.cpa.model.entity.User
 import knu.cpa.model.entity.UserHealth
+import knu.cpa.repository.StrokeRepository
 import knu.cpa.repository.UserHealthRepository
-import knu.cpa.repository.UserRepository
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.http.*
 import org.springframework.security.core.Authentication
 
 @Service
 class UserHealthApplicationImpl(
-        private val userRepository: UserRepository,
-        private val userHealthRepository: UserHealthRepository
+        private val userHealthRepository: UserHealthRepository,
+        private val strokeRepository: StrokeRepository
 ) : UserHealthApplication {
 
     override fun getUserHealthList(authentication: Authentication): ResponseEntity<List<UserHealthResElementDto>> {
@@ -48,6 +48,16 @@ class UserHealthApplicationImpl(
                 job = userHealthReqDto.job,
         )
         userHealthRepository.save(userHealth)
+
+        // Stroke 엔티티 생성 및 저장
+        val stroke = Stroke(
+                id = userHealth.id,
+                userId = userId,
+                isStroke = null,
+                probability = null
+        )
+        strokeRepository.save(stroke)
+
         return ResponseEntity(HttpStatus.CREATED)
     }
 
