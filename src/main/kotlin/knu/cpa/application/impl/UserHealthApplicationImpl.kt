@@ -4,8 +4,10 @@ import knu.cpa.application.UserHealthApplication
 import knu.cpa.model.dto.userHealth.req.UserHealthPostReq
 import knu.cpa.model.dto.userHealth.res.UserHealthGetElementRes
 import knu.cpa.model.dto.userHealth.res.UserHealthGetRes
+import knu.cpa.model.entity.Stroke
 import knu.cpa.model.entity.User
 import knu.cpa.model.entity.UserHealth
+import knu.cpa.repository.StrokeRepository
 import knu.cpa.repository.UserHealthRepository
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
@@ -15,9 +17,16 @@ import org.springframework.stereotype.Service
 import java.util.concurrent.CompletableFuture
 
 @Service
-class UserHealthApplicationImpl(private val userHealthRepository: UserHealthRepository) : UserHealthApplication{
+class UserHealthApplicationImpl(
+    private val userHealthRepository: UserHealthRepository,
+    private val strokeRepository: StrokeRepository) : UserHealthApplication{
     override fun post(userHealthPostReq: UserHealthPostReq, authentication: Authentication): ResponseEntity<HttpStatus> {
-        userHealthRepository.save(UserHealth(userHealthPostReq, User(authentication)))
+        val userHealth = userHealthRepository.save(UserHealth(userHealthPostReq, User(authentication)))
+        CompletableFuture.runAsync {
+            strokeRepository.save(
+                Stroke(id = null, userHealth = userHealth, probability = 0.5F, isWeight = false, isAge = false, isBloodPressure = false, isHeartDisease = false)
+            )
+        }
         return ResponseEntity.ok().build()
     }
 
