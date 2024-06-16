@@ -38,20 +38,25 @@ class UserHealthApplicationImpl(
         var bmi = 0F
 
         CompletableFuture.supplyAsync {
+            println("STEP1")
             userRepository.findById(authentication.name.toLong()).orElseThrow()
         }.thenApplyAsync {
+            println("STEP2")
             age = Period.between(it.birthday, LocalDate.now()).years
             bmi = (userHealthPostReq.weight)/((userHealthPostReq.height * userHealthPostReq.height) / 10000)
             objectMapper.writeValueAsString(StrokeGetReq(it, userHealthPostReq))
         }.thenApply {
+            println("STEP3")
             val httpHeaders = HttpHeaders()
             httpHeaders.contentType = MediaType.APPLICATION_JSON
             HttpEntity(it, httpHeaders)
         }.thenApplyAsync {
+            println("STEP4")
             val postForEntity = RestTemplate().postForEntity("$fastApiServer/predict_stroke", it, StrokeGetRes::class.java)
             println(postForEntity)
             postForEntity
         }.thenApplyAsync {
+            println("STEP5\n")
             println(strokeRepository.save(
                 Stroke(id = null,
                     userHealth = userHealth,
