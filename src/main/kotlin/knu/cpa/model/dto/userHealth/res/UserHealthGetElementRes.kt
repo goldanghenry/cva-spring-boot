@@ -1,7 +1,6 @@
 package knu.cpa.model.dto.userHealth.res
 
 import knu.cpa.model.entity.UserHealth
-import knu.cpa.model.state.JobState
 import java.time.LocalDate
 
 data class UserHealthGetElementRes(
@@ -13,7 +12,7 @@ data class UserHealthGetElementRes(
     val solo: Boolean,
     val city: Boolean,
     val heartDisease: Boolean,
-    val job: JobState
+    val job: String
 ){
     constructor(userHealth: UserHealth): this(
         id = userHealth.id,

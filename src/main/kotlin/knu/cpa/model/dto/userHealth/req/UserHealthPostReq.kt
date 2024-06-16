@@ -1,6 +1,5 @@
 package knu.cpa.model.dto.userHealth.req
 
-import knu.cpa.model.state.JobState
 import java.time.LocalDate
 
 data class UserHealthPostReq(
@@ -11,5 +10,7 @@ data class UserHealthPostReq(
     val solo: Boolean,
     val city: Boolean,
     val heartDisease: Boolean,
-    val job: JobState
+    val job: String,
+    val avg_glucose_level: Float,
+    val smoking_status: String
 )

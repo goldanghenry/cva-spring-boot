@@ -2,7 +2,6 @@ package knu.cpa.model.entity
 
 import jakarta.persistence.*
 import knu.cpa.model.dto.userHealth.req.UserHealthPostReq
-import knu.cpa.model.state.JobState
 import java.time.LocalDate
 
 @Entity
@@ -28,8 +27,11 @@ data class UserHealth(
 
     var heartDisease: Boolean,
 
-    @Enumerated(EnumType.STRING)
-    var job: JobState
+    var job: String,
+
+    var smoking_status: String,
+
+    var avg_glucose_level: Float
 )
 {
     constructor(userHealthPostReq: UserHealthPostReq, user: User): this(
@@ -42,6 +44,8 @@ data class UserHealth(
         solo = userHealthPostReq.solo,
         city = userHealthPostReq.city,
         heartDisease = userHealthPostReq.heartDisease,
-        job = userHealthPostReq.job
+        job = userHealthPostReq.job,
+        smoking_status =  userHealthPostReq.smoking_status,
+        avg_glucose_level = userHealthPostReq.avg_glucose_level
     )
 }
