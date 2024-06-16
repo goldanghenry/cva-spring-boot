@@ -48,9 +48,11 @@ class UserHealthApplicationImpl(
             httpHeaders.contentType = MediaType.APPLICATION_JSON
             HttpEntity(it, httpHeaders)
         }.thenApplyAsync {
-            RestTemplate().postForEntity("$fastApiServer/predict_stroke", it, StrokeGetRes::class.java)
+            val postForEntity = RestTemplate().postForEntity("$fastApiServer/predict_stroke", it, StrokeGetRes::class.java)
+            println(postForEntity)
+            postForEntity
         }.thenApplyAsync {
-            strokeRepository.save(
+            println(strokeRepository.save(
                 Stroke(id = null,
                     userHealth = userHealth,
                     probability = it.body?.stroke_probability ?: 0F,
@@ -58,7 +60,7 @@ class UserHealthApplicationImpl(
                     isAge = age > 50,
                     isBloodPressure = userHealthPostReq.highBloodPressure,
                     isHeartDisease = userHealthPostReq.heartDisease
-                ))
+                )))
         }
         return ResponseEntity.ok().build()
     }
