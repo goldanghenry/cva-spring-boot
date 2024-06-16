@@ -6,4 +6,5 @@ import org.springframework.security.core.Authentication
 
 interface StrokeApplication {
     fun getList(authentication: Authentication): ResponseEntity<List<StrokeGetElementRes>>
+    fun get(strokeId: Int, authentication: Authentication): ResponseEntity<StrokeGetElementRes>
 }

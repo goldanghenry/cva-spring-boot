@@ -58,7 +58,7 @@ class UserHealthApplicationImpl(
         }.thenApplyAsync {
             println("STEP5\n")
             println(strokeRepository.save(
-                Stroke(id = null,
+                Stroke(id = userHealth.id,
                     userHealth = userHealth,
                     probability = it.body?.stroke_probability ?: 0F,
                     isWeight = (bmi > 25 || bmi < 18.5),

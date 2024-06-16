@@ -16,4 +16,10 @@ class StrokeApplicationImpl(private val strokeRepository: StrokeRepository): Str
             StrokeGetElementRes(it)
         })
     }
+
+    override fun get(strokeId: Int, authentication: Authentication): ResponseEntity<StrokeGetElementRes> {
+        return ResponseEntity.ok(
+            StrokeGetElementRes(strokeRepository.findById(strokeId).orElseThrow())
+        )
+    }
 }

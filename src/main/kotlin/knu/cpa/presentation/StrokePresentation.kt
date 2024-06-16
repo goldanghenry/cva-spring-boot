@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -24,5 +25,12 @@ class StrokePresentation(private val strokeApplication: StrokeApplication) {
     @ApiResponse(responseCode = "200", description = "성공", content = [Content(schema = Schema(implementation = StrokeGetElementRes::class))])
     fun getList(@Parameter(hidden = true) authentication: Authentication): ResponseEntity<List<StrokeGetElementRes>> {
         return strokeApplication.getList(authentication)
+    }
+
+    @GetMapping
+    @Operation(summary = "뇌졸중 확률 예측 조회")
+    @ApiResponse(responseCode = "200", description = "성공", content = [Content(schema = Schema(implementation = StrokeGetElementRes::class))])
+    fun get(@RequestParam strokeId: Int ,@Parameter(hidden = true) authentication: Authentication): ResponseEntity<StrokeGetElementRes>{
+        return strokeApplication.get(strokeId, authentication)
     }
 }
