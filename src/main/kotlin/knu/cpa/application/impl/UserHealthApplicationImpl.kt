@@ -66,6 +66,9 @@ class UserHealthApplicationImpl(
                     isBloodPressure = userHealthPostReq.highBloodPressure,
                     isHeartDisease = userHealthPostReq.heartDisease
                 )))
+        }.exceptionally { ex ->
+            println("Exception occurred: ${ex.message}")
+            ex.printStackTrace()
         }
         return ResponseEntity.ok().build()
     }
