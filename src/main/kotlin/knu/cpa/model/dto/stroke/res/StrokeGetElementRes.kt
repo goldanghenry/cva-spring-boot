@@ -8,7 +8,8 @@ data class StrokeGetElementRes(
 
     var probability: Float,
 
-    var isWeight: Boolean,
+    var isHighWeight: Boolean,
+    var isLowWeight: Boolean,
 
     var isAge: Boolean,
 
@@ -21,7 +22,8 @@ data class StrokeGetElementRes(
         id = stroke.id,
         userHealthId = stroke.userHealth.id,
         probability = stroke.probability,
-        isWeight = stroke.isWeight,
+        isHighWeight = stroke.isHighWeight,
+        isLowWeight = stroke.isLowWeight,
         isAge = stroke.isAge,
         isBloodPressure = stroke.isBloodPressure,
         isHeartDisease = stroke.isHeartDisease

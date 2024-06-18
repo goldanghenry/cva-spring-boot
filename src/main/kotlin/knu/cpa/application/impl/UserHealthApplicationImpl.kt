@@ -61,7 +61,8 @@ class UserHealthApplicationImpl(
                 Stroke(id = userHealth.id,
                     userHealth = userHealth,
                     probability = it.body?.stroke_probability ?: 0F,
-                    isWeight = (bmi > 25 || bmi < 18.5),
+                    isHighWeight = bmi > 25,
+                    isLowWeight = bmi < 18.5,
                     isAge = age > 50,
                     isBloodPressure = userHealthPostReq.highBloodPressure,
                     isHeartDisease = userHealthPostReq.heartDisease

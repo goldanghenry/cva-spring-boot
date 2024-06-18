@@ -14,7 +14,8 @@ data class Stroke(
 
     var probability: Float,
 
-    var isWeight: Boolean,
+    var isHighWeight: Boolean,
+    var isLowWeight: Boolean,
 
     var isAge: Boolean,
 

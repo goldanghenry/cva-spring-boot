@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*
 class AuthPresentation (private val authApplication: AuthApplication){
 
     @GetMapping("/login")
-    @Operation(hidden = true)
+    @Operation(summary = "로그인")
     fun getLogin(@RequestParam code: String): ResponseEntity<AuthLoginRes> {
         return authApplication.getLogin(code)
     }
