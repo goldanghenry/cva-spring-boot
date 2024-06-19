@@ -27,6 +27,12 @@ class AuthPresentation (private val authApplication: AuthApplication){
         return authApplication.getLogin(code)
     }
 
+    @GetMapping("/local-login")
+    @Operation(summary = "로컬 로그인")
+    fun getLocalLogin(@RequestParam code: String): ResponseEntity<AuthLoginRes>{
+        return authApplication.getLocalLogin(code)
+    }
+
     @PatchMapping("/login")
     @Operation(summary = "AccessToken 갱신 API", description = "RefreshToken 사용해서 AccessToken 갱신")
     @ApiResponses(

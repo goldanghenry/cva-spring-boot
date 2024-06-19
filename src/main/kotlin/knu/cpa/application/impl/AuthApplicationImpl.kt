@@ -23,12 +23,33 @@ class AuthApplicationImpl(
     private val clientId: String,
     @Value("\${kakao.auth.redirect_uri}")
     private val redirectUri: String,
+    @Value("\${kakao.auth.local_redirect_uri}")
+    private val localRedirectUri: String,
     private val userRepository: UserRepository,
-    private val jwtTokenProvider: JwtTokenProvider
+    private val jwtTokenProvider: JwtTokenProvider,
 ): AuthApplication{
 
     private val accessTokenReqUrl = "https://kauth.kakao.com/oauth/token"
     private val jsonReqUrl = "https://kapi.kakao.com/v2/user/me"
+    override fun getLocalLogin(code: String): ResponseEntity<AuthLoginRes> {
+
+        val kakaoAccessToken = getLocalKakaoAccessToken(code) ?: throw NullPointerException()
+
+        val authKakaoInfoRes = getIdByKakao(kakaoAccessToken) ?: throw NullPointerException()
+
+        val optionalUser = userRepository.findById(authKakaoInfoRes.id)
+
+        if (optionalUser.isEmpty)
+            return register(authKakaoInfoRes)
+
+        val accessToken = jwtTokenProvider.createAccessToken(authKakaoInfoRes.id)
+        val refreshToken = jwtTokenProvider.createRefreshToken(authKakaoInfoRes.id)
+
+        val user = optionalUser.get()
+        userRepository.save(user)
+
+        return ResponseEntity.ok(AuthLoginRes(refreshToken = refreshToken, accessToken = accessToken))
+    }
 
     override fun getLogin(code: String): ResponseEntity<AuthLoginRes> {
 
@@ -115,6 +136,24 @@ class AuthApplicationImpl(
         httpBody.add("grant_type","authorization_code")
         httpBody.add("client_id", clientId)
         httpBody.add("redirect_uri", redirectUri)
+        httpBody.add("code",code)
+
+        return restTemplate.postForObject(accessTokenReqUrl, HttpEntity(httpBody, httpHeaders), AuthKakaoAccessRes::class.java)?.access_token
+    }
+
+    private fun getLocalKakaoAccessToken(code: String): String?{
+
+        val restTemplate = RestTemplate()
+
+        val httpHeaders = HttpHeaders()
+
+        httpHeaders.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8")
+
+        val httpBody = LinkedMultiValueMap<String, String>()
+
+        httpBody.add("grant_type","authorization_code")
+        httpBody.add("client_id", clientId)
+        httpBody.add("redirect_uri", localRedirectUri)
         httpBody.add("code",code)
 
         return restTemplate.postForObject(accessTokenReqUrl, HttpEntity(httpBody, httpHeaders), AuthKakaoAccessRes::class.java)?.access_token

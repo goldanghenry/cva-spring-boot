@@ -12,4 +12,5 @@ interface AuthApplication {
     fun patchLogin(refreshToken: String): ResponseEntity<AuthLoginRes>
     fun postInfo(authPostReq: AuthPostReq, authentication: Authentication): ResponseEntity<HttpStatus>
     fun getInfo(authentication: Authentication): ResponseEntity<AuthGetRes>
+    fun getLocalLogin(code: String): ResponseEntity<AuthLoginRes>
 }
