@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional
 
 interface UserHealthRepository: JpaRepository<UserHealth, Int> {
     fun findByUser(user: User, pageable: Pageable): List<UserHealth>
+    fun findByUserOrderByIdDesc(user: User, pageable: Pageable): List<UserHealth>
     fun findTopByUserOrderByIdDesc(user: User): UserHealth
     @Transactional
     fun deleteByIdAndUser(id: Int, user: User): Int

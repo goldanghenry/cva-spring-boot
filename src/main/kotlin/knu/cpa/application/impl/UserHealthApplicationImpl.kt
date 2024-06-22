@@ -75,7 +75,7 @@ class UserHealthApplicationImpl(
     }
 
     override fun getList(pageNumber: Int, pageSize: Int, authentication: Authentication): ResponseEntity<List<UserHealthGetElementRes>> {
-        return ResponseEntity.ok(userHealthRepository.findByUser(User(authentication), PageRequest.of(pageNumber, pageSize)).map{
+        return ResponseEntity.ok(userHealthRepository.findByUserOrderByIdDesc(User(authentication), PageRequest.of(pageNumber, pageSize)).map{
                 userHealth -> UserHealthGetElementRes(userHealth)
         })
     }
