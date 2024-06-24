@@ -14,7 +14,7 @@ interface StrokeRepository: JpaRepository<Stroke, Int> {
         "SELECT s FROM Stroke s " +
                 "LEFT JOIN s.userHealth uH " +
                 "LEFT JOIN uH.user u " +
-                "WHERE u = :user ORDER BY s.id"
+                "WHERE u = :user ORDER BY s.id desc "
     )
     fun findTopByUserOrderByIdDesc(user: User, pageable: Pageable): List<Stroke>
 

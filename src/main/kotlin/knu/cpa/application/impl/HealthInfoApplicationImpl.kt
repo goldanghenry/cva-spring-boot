@@ -27,7 +27,9 @@ class HealthInfoApplicationImpl(
         if(strokeList.isEmpty())
             return ResponseEntity(HttpStatus.NOT_FOUND)
 
-        val stroke = strokeList[0]
+        val stroke = strokeList.last()
+
+        println(stroke)
 
         val ageFuture: CompletableFuture<List<HealthInfo>?> = CompletableFuture.supplyAsync {
             if(stroke.isAge)
@@ -63,6 +65,9 @@ class HealthInfoApplicationImpl(
             else
                 null
         }
+
+        println(stroke.isHighWeight)
+        println(stroke.isBloodPressure)
 
         CompletableFuture.allOf(ageFuture, highWeightFuture, lowWeightFuture, heartDiseaseFuture, highBloodPressureFuture).thenApply{
             ageFuture.get()?.map { healthInfo ->  healthInfoGetElementList.add(HealthInfoGetElementRes(healthInfo)) }
